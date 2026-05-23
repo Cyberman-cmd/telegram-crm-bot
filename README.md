@@ -41,3 +41,23 @@ It supports the following commands:
 
 To start the bot, you should create a new bot in BotFather in Telegram, determine its Token, which you will receive, and also use UserInfo to determine the ID of the person who will be the administrator.
 and insert your ID into ADMIN_ID.
+
+
+## UPDATE
+
+### What's new?
+
+- Async aiogram bot
+- PostgreSQL
+- Docker Compose
+- CRUD operations
+- Admin panel
+
+What u need?
+- Python
+- Aiogram
+- PostgreSQL
+- Docker
+
+### run
+docker compose up --build

@@ -1,11 +1,18 @@
-import _sqlite3
+import psycopg2
+import os
 
 
-conn = _sqlite3.connect('orders.db')
+conn = psycopg2.connect(
+    host = os.getenv("DB_HOST"),
+    database = os.getenv("DB_NAME"),
+    user = os.getenv("DB_USER"),
+    password = os.getenv("DB_PASSWORD"),
+    port = int(os.getenv("DB_PORT")) 
+    )
 cursor = conn.cursor()
 cursor.execute("""
     CREATE TABLE IF NOT EXISTS orders (
-        id INTEGER PRIMARY KEY AUTOINCREMENT,
+        id SERIAL PRIMARY KEY,
         name TEXT NOT NULL,
         phone TEXT NOT NULL,
         email TEXT NOT NULL,
@@ -16,7 +23,7 @@ conn.commit()
 def add_new(name,phone,email,comment):
     cursor.execute("""
         INSERT INTO orders(name,phone,email,comment)
-        VALUES (?,?,?,?)
+        VALUES (%s,%s,%s,%s)
         
 
     """,
@@ -29,7 +36,7 @@ def get_orders(limit = None):
         cursor.execute(
             """
             SELECT * FROM orders
-            LIMIT ?
+            LIMIT %s
             """,
             (limit,)
         )
@@ -45,7 +52,7 @@ def get_orders(limit = None):
 def delete_order(order_id,):
     cursor.execute("""
         DELETE FROM orders
-        WHERE id = ?
+        WHERE id = %s
     """,
     (order_id,)
     )
@@ -54,8 +61,8 @@ def delete_order(order_id,):
 def update_order(new_comment,order_id,):
     cursor.execute("""
         UPDATE orders
-        SET comment = ?
-        WHERE id = ?
+        SET comment = %s
+        WHERE id = %s
         
 
 
